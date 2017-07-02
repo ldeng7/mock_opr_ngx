@@ -1,6 +1,7 @@
 package main
 
 /*
+#include <stdlib.h>
 #include <string.h>
 */
 import "C"
@@ -14,6 +15,13 @@ func cStrToGoBytes(cStr *C.char, l C.int) []byte {
 
 func goBytesToCStr(goBytes []byte) *C.char {
 	return C.CString(string(goBytes))
+}
+
+//export freeStr
+func freeStr(cStr *C.char) {
+	if nil != cStr {
+		C.free(unsafe.Pointer(cStr))
+	}
 }
 
 func main() {}

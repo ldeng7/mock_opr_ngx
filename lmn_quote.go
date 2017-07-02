@@ -5,16 +5,16 @@ import (
 	"net/url"
 )
 
-//export LMN_escape_uri
-func LMN_escape_uri(cStr *C.char, lin C.int, l *C.int) *C.char {
-	outStr := url.QueryEscape(C.GoStringN(cStr, lin))
+//export lmn_escape_uri
+func lmn_escape_uri(cStr *C.char, lenIn C.int, l *C.int) *C.char {
+	outStr := url.QueryEscape(C.GoStringN(cStr, lenIn))
 	*l = C.int(len(outStr))
 	return C.CString(outStr)
 }
 
-//export LMN_quote_sql_str
-func LMN_quote_sql_str(cStr *C.char, lin C.int, l *C.int) *C.char {
-	s := cStrToGoBytes(cStr, lin)
+//export lmn_quote_sql_str
+func lmn_quote_sql_str(cStr *C.char, lenIn C.int, l *C.int) *C.char {
+	s := cStrToGoBytes(cStr, lenIn)
 	outBytes := make([]byte, len(s)*2+2)
 	j := 0
 	outBytes[j] = '\''
@@ -68,9 +68,9 @@ func LMN_quote_sql_str(cStr *C.char, lin C.int, l *C.int) *C.char {
 	return goBytesToCStr(outBytes[:j])
 }
 
-//export LMN_unescape_uri
-func LMN_unescape_uri(cStr *C.char, lin C.int, l *C.int) *C.char {
-	outStr, _ := url.QueryUnescape(C.GoStringN(cStr, lin))
+//export lmn_unescape_uri
+func lmn_unescape_uri(cStr *C.char, lenIn C.int, l *C.int) *C.char {
+	outStr, _ := url.QueryUnescape(C.GoStringN(cStr, lenIn))
 	*l = C.int(len(outStr))
 	return C.CString(outStr)
 }
