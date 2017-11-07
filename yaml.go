@@ -4,7 +4,7 @@ import "C"
 import (
 	"encoding/json"
 
-	"github.com/ldeng7/go-yaml"
+	"gopkg.in/yaml.v2"
 )
 
 //export yaml_2json
