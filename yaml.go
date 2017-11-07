@@ -4,17 +4,25 @@ import "C"
 import (
 	"encoding/json"
 
-	"gopkg.in/yaml.v2"
+	"github.com/go-yaml/yaml"
 )
 
-//export yaml_2json
-func yaml_2json(cStr *C.char, lenIn C.int, l *C.int) *C.char {
-	m := make(map[string]interface{})
+//export yaml2json
+func yaml2json(cStr *C.char, lenIn C.int, l *C.int) *C.char {
+	m := make(map[interface{}]interface{})
 	err := yaml.Unmarshal(cStrToGoBytes(cStr, lenIn), m)
 	if nil != err {
 		return nil
 	}
-	jStr, err := json.Marshal(m)
+
+	ms := make(map[string]interface{})
+	for ik, v := range m {
+		if k, ok := ik.(string); ok {
+			ms[k] = v
+		}
+	}
+
+	jStr, err := json.Marshal(ms)
 	if nil != err {
 		return nil
 	}
